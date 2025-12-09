@@ -10,6 +10,7 @@ from werkzeug.utils import secure_filename
 @app.route('/', methods=['GET', 'POST'])
 def homepage():
     login_form = LoginForm()
+    user = User.query.filter_by(email=login_form.email.data).first()
     if login_form.validate_on_submit():
         user = User.query.filter_by(email=login_form.email.data).first()
         if user and bcrypt.check_password_hash(user.password, login_form.password.data):

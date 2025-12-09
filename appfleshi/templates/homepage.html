@@ -22,10 +22,24 @@
                         {{ form.email.label(class="form-label") }}
                         {{ form.email(class="form-control") }}
                     </div>
+
+                    {% if form.email.errors %}
+                        {% for erro in form.email.errors %}
+                            <p  class="alert alert-danger">{{ erro }}</p>
+                        {% endfor %}
+                    {% endif %}
+
                     <div class="mb-3">
                         {{ form.password.label(class="form-label") }}
                         {{ form.password(class="form-control") }}
                     </div>
+
+                    {% if form.password.errors %}
+                        {% for erro in form.password.errors %}
+                            <p  class="alert alert-danger">{{ erro }}</p>
+                        {% endfor %}
+                    {% endif %}
+
                     {{ form.submit(class="btn btn-outline-success w-100 mb-3") }}
                 </form>
                 <a href="{{ url_for('createaccount') }}" class="w-100">Não tem uma conta? Cadastre-se</a>

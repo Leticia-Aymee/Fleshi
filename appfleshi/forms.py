@@ -2,6 +2,7 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField, FileField
 from wtforms.validators import DataRequired, Email, EqualTo, ValidationError, Length
 from appfleshi.models import User
+from appfleshi import bcrypt
 
 class PhotoForm(FlaskForm):
     photo = FileField("Foto", validators=[DataRequired()])
@@ -17,6 +18,16 @@ class LoginForm(FlaskForm):
         if not user:
             raise ValidationError("Usuário não encontrado!")
         return None
+
+    def validate_password(self, password):
+        user = User.query.filter_by(email=self.email.data).first()
+        if user:
+            if not bcrypt.check_password_hash(user.password, password.data):
+                raise ValidationError("Senha incorreta!")
+        else:
+            raise ValidationError("Usuário não encontrado!")
+        return None
+
 
 class RegisterForm(FlaskForm):
     email = StringField('Email', validators=[DataRequired(), Email()])
