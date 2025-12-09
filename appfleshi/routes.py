@@ -58,3 +58,14 @@ def logout():
 def feed():
     photos = Photo.query.order_by(Photo.upload_date.desc()).all()
     return render_template("feed.html", photos=photos)
+
+@app.route("/deletephoto/<photo_id>", methods=['GET', 'POST'])
+@login_required
+def delete_photo(photo_id):
+    photo = Photo.query.get(photo_id)
+    if photo:
+        database.session.delete(photo)
+        database.session.commit()
+        return redirect(url_for('profile', user_id=photo.user_id))
+    else:
+        return redirect(url_for('homepage'))

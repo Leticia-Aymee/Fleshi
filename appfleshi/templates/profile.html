@@ -19,6 +19,12 @@
 
         {% for photo in user.photos %}
             <img src="{{ url_for('static', filename='posts_photos/' ~ photo.file_name) }}" alt="imagem">
+
+            <form action="{{ url_for('delete_photo', photo_id=photo.id) }}" method="post">
+                <button type="submit">Excluir</button>
+            </form>
         {% endfor %}
+
+
     </body>
 {% endblock %}
