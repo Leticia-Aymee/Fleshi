@@ -3,35 +3,65 @@
 {% block title %}
     Fléshi - Criar Conta
 {% endblock %}
+ <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
 
-{% block form %}
-    <form method="post">
-        {{ form.csrf_token }}
-        {{ form.email.label() }}
-        {{ form.email() }}
+{% block body %}
+    <h1>Fléshi - Criar Conta</h1>
+    {% block form %}
+        <div class="d-flex justify-content-center">
+            <div class="border m-5 shadow-lg rounded-5 p-5 w-25">
+                <form method="post">
+                    {{ form.csrf_token }}
 
-        {% if form.email.errors %}
-            {% for erro in form.email.errors %}
-                <p  class="alert alert-danger">{{ erro }}</p>
-            {% endfor %}
-        {% endif %}
+                    <div class="mb-3 w-100">
+                        {{ form.email.label(class="form-label") }}
+                        {{ form.email(class="form-control") }}
+                    </div>
 
-        {{ form.username.label() }}
-        {{ form.username() }}
+                    {% if form.email.errors %}
+                        {% for erro in form.email.errors %}
+                            <p  class="alert alert-danger">{{ erro }}</p>
+                        {% endfor %}
+                    {% endif %}
 
-        {% if form.username.errors %}
-            {% for erro in form.username.errors %}
-                <p  class="alert alert-danger">{{ erro }}</p>
-            {% endfor %}
-        {% endif %}
+                    <div class="mb-3">
+                        {{ form.username.label(class="form-label") }}
+                        {{ form.username(class="form-control") }}
+                    </div>
 
-        {{ form.password.label() }}
-        {{ form.password() }}
+                    {% if form.username.errors %}
+                        {% for erro in form.username.errors %}
+                            <p  class="alert alert-danger">{{ erro }}</p>
+                        {% endfor %}
+                    {% endif %}
 
-        {{ form.confirm_password.label() }}
-        {{ form.confirm_password() }}
+                    <div class="mb-3">
+                        {{ form.password.label(class="form-label") }}
+                        {{ form.password(class="form-control") }}
+                    </div>
 
-        {{ form.submit() }}
-    </form>
-<a href="{{ url_for('homepage') }}">Tem uma conta? Faça login!</a>
+                    {% if form.password.errors %}
+                        {% for erro in form.password.errors %}
+                            <p  class="alert alert-danger">{{ erro }}</p>
+                        {% endfor %}
+                    {% endif %}
+
+                    <div class="mb-3">
+                        {{ form.confirm_password.label(class="form-label") }}
+                        {{ form.confirm_password(class="form-control") }}
+                    </div>
+
+                    {% if form.confirm_password.errors %}
+                        {% for erro in form.confirm_password.errors %}
+                            <p  class="alert alert-danger">{{ erro }}</p>
+                        {% endfor %}
+                    {% endif %}
+
+                    {{ form.submit(class="btn btn-outline-success w-100 mb-3") }}
+                </form>
+                <a href="{{ url_for('homepage') }}">Tem uma conta? Faça login!</a>
+            </div>
+        </div>
+    {% endblock %}
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
 {% endblock %}

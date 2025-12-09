@@ -22,7 +22,7 @@ class RegisterForm(FlaskForm):
     email = StringField('Email', validators=[DataRequired(), Email()])
     username = StringField('Nome de Usuário', validators=[DataRequired(), Length(min=2, max=20)])
     password = PasswordField('Senha', validators=[DataRequired(), Length(min=6, max=60)])
-    confirm_password = PasswordField('Confirmar Senha', validators=[DataRequired(), EqualTo('password')])
+    confirm_password = PasswordField('Confirmar Senha', validators=[DataRequired(), EqualTo('password', message="As senhas não coincidem!")])
     submit = SubmitField('Criar Conta')
 
     def validate_email(self, email):
@@ -36,3 +36,5 @@ class RegisterForm(FlaskForm):
         if user:
             raise ValidationError("Usuário já cadastrado!")
         return None
+
+
