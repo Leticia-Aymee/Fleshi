@@ -16,16 +16,16 @@ class LoginForm(FlaskForm):
     def validate_email(self, email):
         user = User.query.filter_by(email=email.data).first()
         if not user:
-            raise ValidationError("Usuário não encontrado!")
+            raise ValidationError("E-mail inválido!")
         return None
 
     def validate_password(self, password):
+        if self.email.errors:
+            return None
+
         user = User.query.filter_by(email=self.email.data).first()
-        if user:
-            if not bcrypt.check_password_hash(user.password, password.data):
-                raise ValidationError("Senha incorreta!")
-        else:
-            raise ValidationError("Usuário não encontrado!")
+        if not bcrypt.check_password_hash(user.password, password.data):
+            raise ValidationError("Senha inválida!")
         return None
 
 
