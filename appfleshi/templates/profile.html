@@ -5,26 +5,38 @@
 {% endblock %}
 
 {% block body %}
-    <body>
-        {% include "navbar.html" %}
-        <h1>Perfil do usuário: {{ user.username }}</h1>
+<body>
+    {% include "navbar.html" %}
+    <div class="container mt-4">
+        <h1 class="mb-4">Perfil do usuário: {{ user.username }}</h1>
 
         {% if form %}
-            <form method="post" enctype="multipart/form-data">
-                {{ form.csrf_token }}
-                {{ form.photo() }}
-                {{ form.submit() }}
-            </form>
+        <form method="post" enctype="multipart/form-data" class="mb-4">
+            {{ form.csrf_token }}
+            <div class="mb-3">
+                {{ form.photo(class="form-control") }}
+            </div>
+            {{ form.submit(class="btn btn-primary") }}
+        </form>
         {% endif %}
 
-        {% for photo in user.photos %}
-            <img src="{{ url_for('static', filename='posts_photos/' ~ photo.file_name) }}" alt="imagem">
+        <div class="row row-cols-1 row-cols-md-3 g-3">
+            {% for photo in user.photos %}
+                <div class="col">
+                    <div class="card shadow-sm">
+                        <img src="{{ url_for('static', filename='posts_photos/' ~ photo.file_name) }}" class="card-img-top" alt="imagem">
 
-            {% if current_user.is_authenticated and current_user.id == user.id %}
-                <form action="{{ url_for('delete_photo', photo_id=photo.id) }}" method="post">
-                    <button type="submit">Excluir</button>
-                </form>
-            {% endif %}
-        {% endfor %}
-    </body>
+                        {% if current_user.is_authenticated and current_user.id == user.id %}
+                        <div class="card-body text-center">
+                            <form action="{{ url_for('delete_photo', photo_id=photo.id) }}" method="post">
+                                <button type="submit" class="btn btn-danger btn-sm">Excluir</button>
+                            </form>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</body>
 {% endblock %}
