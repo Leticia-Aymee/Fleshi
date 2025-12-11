@@ -6,11 +6,25 @@
 
 {% block body %}
     {% include "navbar.html" %}
-    <h1>Feed Principal</h1>
+    <div class="container mt-4">
+        <h1 class="mb-4">Feed Principal</h1>
 
-    {% for photo in photos %}
-        <a href="{{ url_for('profile', user_id=photo.user_id) }}">
-            <img src="{{ url_for('static', filename='posts_photos/' ~ photo.file_name) }}" alt="imagem">
-        </a>
-    {% endfor %}
+        <div class="row row-cols-1 row-cols-md-3 g-4">
+            {% for photo in photos %}
+                <div class="col">
+                    <div class="card h-100 shadow-sm">
+                        <a href="{{ url_for('profile', user_id=photo.user_id) }}">
+                            <img src="{{ url_for('static', filename='posts_photos/' ~ photo.file_name) }}" class="card-img-top" alt="imagem">
+                        </a>
+                        <div class="card-body d-flex flex-column">
+                            <form action="{{ url_for('like', photo_id=photo.id) }}" method="post" class="mb-2">
+                                <button type="submit" class="btn btn-sm btn-primary w-100">Curtir</button>
+                            </form>
+                            <p class="text-muted text-center">{{ photo.likes.count() }} curtidas</p>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
 {% endblock %}

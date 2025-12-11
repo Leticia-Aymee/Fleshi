@@ -3,7 +3,7 @@ from flask_login import login_required, login_user, logout_user, current_user
 from appfleshi import app
 from appfleshi.forms import LoginForm, RegisterForm, PhotoForm
 from appfleshi import app, database, bcrypt
-from appfleshi.models import User, Photo
+from appfleshi.models import User, Photo, Like
 import os
 from werkzeug.utils import secure_filename
 
@@ -71,3 +71,23 @@ def delete_photo(photo_id):
     database.session.commit()
 
     return redirect(url_for('profile', user_id=photo.user_id))
+
+@app.route("/like/<photo_id>", methods=['POST'])
+@login_required
+def like(photo_id):
+    photo = Photo.query.get(photo_id)
+    like = Like.query.filter_by(photo_id=photo_id, user_id=current_user.id).first()
+
+    if not photo:
+        return redirect(url_for('homepage'))
+
+    if like:
+        database.session.delete(like)
+
+    else:
+        like = Like(photo_id=photo_id, user_id=current_user.id)
+        database.session.add(like)
+
+    database.session.commit()
+
+    return redirect(url_for('feed', user_id=photo.user_id))
