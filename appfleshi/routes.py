@@ -63,10 +63,11 @@ def feed():
 @app.route("/deletephoto/<photo_id>", methods=['GET', 'POST'])
 @login_required
 def delete_photo(photo_id):
-    photo = Photo.query.get(photo_id)
-    if photo:
-        database.session.delete(photo)
-        database.session.commit()
-        return redirect(url_for('profile', user_id=photo.user_id))
-    else:
+    photo = Photo.query.filter_by(id=photo_id, user_id=current_user.id).first()
+    if not photo or photo.user_id != current_user.id:
         return redirect(url_for('homepage'))
+
+    database.session.delete(photo)
+    database.session.commit()
+
+    return redirect(url_for('profile', user_id=photo.user_id))
