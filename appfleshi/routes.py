@@ -67,6 +67,8 @@ def delete_photo(photo_id):
     if not photo or photo.user_id != current_user.id:
         return redirect(url_for('homepage'))
 
+    Like.query.filter_by(photo_id=photo.id).delete()
+
     database.session.delete(photo)
     database.session.commit()
 
