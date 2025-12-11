@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField, FileField
-from wtforms.validators import DataRequired, Email, EqualTo, ValidationError, Length
+from wtforms.validators import DataRequired, Email, EqualTo, ValidationError, Length, Regexp
 from appfleshi.models import User
 from appfleshi import bcrypt
 
@@ -32,7 +32,7 @@ class LoginForm(FlaskForm):
 class RegisterForm(FlaskForm):
     email = StringField('Email', validators=[DataRequired(), Email()])
     username = StringField('Nome de Usuário', validators=[DataRequired(), Length(min=2, max=20)])
-    password = PasswordField('Senha', validators=[DataRequired(), Length(min=6, max=60)])
+    password = PasswordField('Senha', validators=[DataRequired(), Length(min=6, max=60), Regexp(regex=r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&]) [A-Za-z\d@$!%*?&]', message="Senha Fraca!")])
     confirm_password = PasswordField('Confirmar Senha', validators=[DataRequired(), EqualTo('password', message="As senhas não coincidem!")])
     submit = SubmitField('Criar Conta')
 
